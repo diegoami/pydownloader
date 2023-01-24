@@ -1,3 +1,5 @@
+import urllib.error
+
 from pytube import Playlist
 import os
 
@@ -36,10 +38,18 @@ if __name__ == "__main__":
                      highres_stream = video_streams.get_highest_resolution()
 
                      #video_to_download.on_progress()
-                     highres_stream.download(output_path=playlist_dir,
-                                             filename=video_id,
-                                             filename_prefix=str(index+1)+'_',
-                                             skip_existing=True,
-                                             max_retries=3, timeout=600)
+                     max_tries = 5
+                     successful = False
+                     while max_tries > 0 and not successful:
+                         try:
+                             highres_stream.download(output_path=playlist_dir,
+                                                     filename=video_id,
+                                                     filename_prefix=str(index+1)+'_',
+                                                     skip_existing=True,
+                                                     max_retries=3, timeout=600)
+                             successful = True
+                         except urllib.error.HTTPError as httpe:
+                             print("Error while trying to download, retrying")
+                             max_tries -= 1
                  else:
                      print(f"Skipping {video_id} to {playlist_dir}")
