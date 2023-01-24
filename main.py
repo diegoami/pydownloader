@@ -31,7 +31,7 @@ if __name__ == "__main__":
             for index, video in enumerate(videos):
                  video_id = video.video_id
                  if start <= index+1 <= end:
-                     print(f"Downloading {video_id} to {playlist_dir}")
+                     print(f"Downloading {index+1}_{video_id} to {playlist_dir}")
                      video_streams = video.streams
                      highres_stream = video_streams.get_highest_resolution()
 
@@ -40,4 +40,6 @@ if __name__ == "__main__":
                                              filename=video_id,
                                              filename_prefix=str(index+1)+'_',
                                              skip_existing=True,
-                                             max_retries=3)
+                                             max_retries=3, timeout=600)
+                 else:
+                     print(f"Skipping {video_id} to {playlist_dir}")
