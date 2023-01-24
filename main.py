@@ -9,7 +9,6 @@ import time
 import argparse
 
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config')  # option that takes a value
@@ -48,6 +47,8 @@ if __name__ == "__main__":
                                                      skip_existing=True,
                                                      max_retries=3, timeout=600)
                              successful = True
+                             print(f"Sucessfully downloaded {index + 1}_{video_id} to {playlist_dir}")
+
                          except urllib.error.HTTPError as httpe:
                              print("Error while trying to download, retrying")
                              max_tries -= 1
