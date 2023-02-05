@@ -20,9 +20,11 @@ if __name__ == "__main__":
             conf_info = yaml.safe_load(confhandle)
 
             playlist_id = conf_info["playlist_id"]
+
             target_dir = conf_info["target_dir"]
-            start = conf_info["start"]
-            end = conf_info["end"]
+            start = conf_info.get("start", 0)
+            end = conf_info.get("end", 1000)
+            audio_stream = conf_info.get("audio_stream", False)
             playlist_dir = os.path.join(target_dir, playlist_id)
             os.makedirs(playlist_dir, exist_ok=True)
             playlist_url = f"https://www.youtube.com/playlist?list={playlist_id}"
@@ -33,16 +35,20 @@ if __name__ == "__main__":
                  video_id = video.video_id
                  if start <= index+1 <= end:
                      print(f"Downloading {index+1}_{video_id} to {playlist_dir}")
-                     video_streams = video.streams
-                     highres_stream = video_streams.get_highest_resolution()
+                     if not audio_stream:
+                         video_streams = video.streams
+                         downl_stream = video_streams.get_highest_resolution()
+                     else:
+                         audio_streams = video.streams.filter(only_audio=True)
+                         downl_stream = audio_streams.get_audio_only()
 
                      #video_to_download.on_progress()
                      max_tries = 5
                      successful = False
                      while max_tries > 0 and not successful:
                          try:
-                             highres_stream.download(output_path=playlist_dir,
-                                                     filename=video_id,
+                             downl_stream.download(output_path=playlist_dir,
+                                                     filename=f'{video_id}.mp4',
                                                      filename_prefix=str(index+1)+'_',
                                                      skip_existing=True,
                                                      max_retries=3, timeout=600)
