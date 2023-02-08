@@ -43,7 +43,7 @@ if __name__ == "__main__":
                          downl_stream = audio_streams.get_audio_only()
 
                      #video_to_download.on_progress()
-                     max_tries = 5
+                     max_tries = 10
                      successful = False
                      while max_tries > 0 and not successful:
                          try:
@@ -55,8 +55,9 @@ if __name__ == "__main__":
                              successful = True
                              print(f"Sucessfully downloaded {index + 1}_{video_id} to {playlist_dir}")
 
-                         except urllib.error.HTTPError as httpe:
+                         except Exception as httpe:
                              print("Error while trying to download, retrying")
                              max_tries -= 1
+
                  else:
                      print(f"Skipping {video_id} to {playlist_dir}")
