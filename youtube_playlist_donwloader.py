@@ -1,11 +1,8 @@
-import urllib.error
 
 from pytube import Playlist
-import os
 
 import os
 import yaml
-import time
 import argparse
 
 
