@@ -6,7 +6,7 @@ import yaml
 import argparse
 
 
-def download_videos_from_playlist(playlist_url, audio_stream, start, end):
+def download_videos_from_playlist(playlist_url,  playlist_dir, audio_stream, start, end):
     """
     This method download_videos_from_playlist downloads videos from a given playlist URL. The method takes the following parameters:
 
@@ -76,4 +76,4 @@ if __name__ == "__main__":
             playlist_dir = os.path.join(target_dir, playlist_id)
             os.makedirs(playlist_dir, exist_ok=True)
             playlist_url = f"https://www.youtube.com/playlist?list={playlist_id}"
-            download_videos_from_playlist(playlist_url, audio_stream, start, end)
+            download_videos_from_playlist(playlist_url, playlist_dir, audio_stream, start, end)
